@@ -1,0 +1,77 @@
+{% extends "base_with_structure.html" %}
+
+{% load blog_tags %}
+{% load staticfiles %}
+{% load imagefit %}
+
+
+{% block content %}
+  <div class="breadcrumbs_block">
+                            <p id="breadcrumbs">
+                                <a href="{% url 'homepage' %}">Home</a> / <strong>News</strong>
+                            </p>
+                        </div>
+                                       
+    {% for news in news_list %}
+        <div class="blog_section">
+            <div class="blogs">
+                <!-- news image begin -->
+                <div class="cat_style_image">
+                    {% if news.image %}
+                    <img src="{% static news.image|resize:"600x400,C" %}">
+					{% else %}
+                    <img src="images/default.png">
+                    {% endif %}
+                </div>
+                <!-- news image end -->
+                <div class="speacer"></div>
+                <div class="cat_style_info">
+                    <h3>
+                        {{news.title|title}}
+                    </h3>
+                    <span>{{news.posted|date:"F j, Y @ f a"}}</span>
+                    <p>
+                        {{news.description|truncatewords_html:"20"|safe|escape|title}}
+                    </p>
+                    <div class="readmore">
+                        <a href="/news/detail/{{news.id}}">Read More </a>
+                        <span class="fa fa-chevron-right"></span> 
+                    </div>
+                    <div class="meta-info">
+                        <span class="fa fa-clock-o"></span> 
+                        {{news.posted_on|timesince}} ago 
+                    
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    {% empty %}
+        <p>No newss yet!</p>
+    {% endfor %}
+
+
+    <!-- Pagination -->
+   {% if is_paginated %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}">&larr;prev</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next&rarr;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+
+
+
+

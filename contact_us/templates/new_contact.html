@@ -1,0 +1,57 @@
+{% extends "base_with_structure.html" %}
+{% load staticfiles %}
+{%block content%}
+
+
+<ul style="color:red;">
+{%for field in contact_form %}
+    {% for e in field.errors %}
+    <li>{{e}}</li>
+    {%endfor%}
+    
+{%endfor%}
+	{%for ne in form.non_field_errors%}
+	 	<li>{{ne}}</li>
+	{%endfor%}
+</ul>
+
+<form method="post">{% csrf_token %}
+
+<table>
+   <legend>Contact Us </legend>
+   <tr>
+   <td>{{contact_form.name.label}} <sup>*</sup> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+   <td>{{contact_form.name}}</td>
+   </tr>
+    
+   <tr>
+   <td>{{contact_form.contact_no.label}} </td>
+   <td>{{contact_form.contact_no}}</td>
+   </tr>
+   
+   <tr>
+   <td>{{contact_form.email.label}} <sup>*</sup></td>
+   <td>{{contact_form.email}}</td>
+   </tr>
+   
+   <tr>
+   <td valign="top">{{contact_form.message.label}} <sup>*</sup></td>
+   <td>{{contact_form.message}}</td>
+   </tr>
+   
+   
+   
+   <tr>
+   <td colspan="2"><hr/></td>
+   
+   </tr>
+   <tr>
+   <td colspan="2"><input type="submit" value="submit"/><br/></td>
+   
+   </tr>
+   
+</table>
+
+
+</form>
+{%endblock%}

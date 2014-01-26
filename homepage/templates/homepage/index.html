@@ -1,0 +1,169 @@
+{% extends "base_with_structure.html" %}
+{% load staticfiles %}
+{% load imagefit %}
+
+
+
+{% block slider %}
+			<!-- Slider Begins -->
+			<div class="wrapper-wrapper">
+				<div class="slider_container_full">
+					<div class="slider_container">
+						<div class="slider-2-container">
+							<div id="slider-2" class="slider-3">
+								<div class="bxslider_controls">
+									<span class="next fa fa-chevron-right" id="bxslider_next"></span> <span class="prev fa fa-chevron-left" id="bxslider_prev"></span>
+								</div>
+								<div class="bxslider bxslider_2">
+
+
+									{% for news in news_list %}
+
+										<div class="bxslider_item">
+										<div class="bxslider_photo"> <img src="{% static news.image.url %}" class="attachment-very-large wp-post-image" alt="Image" />
+										<div class="bxslider_info">
+										<div class="date">
+										<table>
+										<tr>
+										<td><a href="{% url 'newslist' %}" class="date_cat">Recent News</a> <span class="date_day">{{news.posted_on|date:"d"}}</span> <span class="date_month">{{news.posted_on|date:"b"}}</span></td>
+										</tr>
+										</table>
+										</div>
+										<h2><a href="{{news.get_absolute_url}}" title="{{news.title}}">{{news.title|truncatewords_html:"6"}}</a> <a class="view_more" href="{{news.get_absolute_url}}">Read Story...</a> </h2>
+										</div>
+										</div>
+
+										</div>
+									{% endfor %}	
+								</div>
+
+								<div class="featured_vids">
+									{% for news in news_list %}
+									
+
+
+									<div class="featured_item" data-slide-index="{{forloop.counter0}}">
+										<div class="featured_item_photo">
+											<a data-slide-index="{{forloop.counter0}}" href="#"><img src="{% static news.image|resize:"100x60,C" %}" class="attachment-small wp-post-image" alt="Slider Image 01"></a>
+										</div>
+										<div class="featured_item_info">
+											<h3>
+											<a data-slide-index="{{forloop.counter0}}"
+											 href="#" > {{news.title|truncatewords_html:9 }}</a>
+											</h3>
+											<div class="meta-info"><span class="fa fa-clock-o"></span>
+												  {%if news.time_hours > 0  %} 
+                     							&nbsp;&nbsp;{{news.posted_on}} &nbsp;&nbsp;
+                       
+                      							  {%else%}
+                      						  &nbsp;&nbsp;{{news.posted_on|timesince}} ago&nbsp;&nbsp;
+                      						  {%endif%}
+
+
+											
+											</div>
+											<!-- <a href="{{news.get_absolute_url}}">Read More...</a> -->
+										</div>
+										     
+										<div class="clear"></div>
+
+									</div>
+									{% endfor %}	
+									
+								</div>
+								<div class="clear"></div>
+
+							
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Slider Ends -->
+{% endblock %}
+
+{% block content %}
+	<div class="nice_heading">
+		<h3>
+			Blogs <span><a title="view all" href="{% url 'post_archive_index' %}">view all</a></span>
+		</h3>
+	</div>
+
+    {% for post in posts %}
+        <div class="blog_section">
+            <div class="blogs">
+                <!-- Post image begin -->
+                <div class="cat_style_image">
+
+
+                    {% if post.image %}
+                    <img src="{% static post.image|resize:"600x400,C" %}">
+                    {% else %}
+                    <img src="/static/images/default.png">
+                    {% endif %}
+
+
+                </div>
+                <!-- post image end -->
+                <div class="speacer"></div>
+                <div class="cat_style_info">
+                    <h3>
+                       <a href="{{post.get_absolute_url}}"> 
+                        {{post.title|title}}</a>
+                    </h3>
+
+                    <p>
+                        {{post.body|truncatewords_html:"20"|safe|title}}
+                    </p>
+                    <div class="readmore">
+                        <a href="{{post.get_absolute_url}}">Read More </a>
+                        <span class="fa fa-chevron-right"></span> 
+                    </div>
+                    <div class="meta-info">
+                        <span class="fa fa-clock-o"></span>
+                        {%if post.time_hours > 0  %} 
+                        {{post.pub_date}} 
+                       
+                        {%else%}
+                        {{post.pub_date|timesince}} ago 
+           
+                        {%endif%}
+
+                        <span class="fa fa-comments"></span>
+                        {% if post.comment_set.all.count > 0 %}
+                        <a href="{{post.get_absolute_url}}" title="{{post.comment_set.all.count}} comments">{{post.comment_set.all.count}} comment{{comment|pluralize}}</a>
+                        {% else %}
+                         <a href="{{post.get_absolute_url}}" title="{{post.comment_set.all.count}} comments">   No Comments
+                         </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    {% empty %}
+        <p>No posts yet!</p>
+    {% endfor %}
+
+
+    <!-- Pagination -->
+    {% if posts.paginator.num_pages > 1 %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if posts.has_previous %}
+                    <a href="?page={{ posts.previous_page_number }}">&larr;prev</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+                </span>
+
+                {% if posts.has_next %}
+                    <a href="?page={{ posts.next_page_number }}">next&rarr;</a>
+                {% endif %}
+            </span>
+        </div>
+
+    {% endif %}
+{% endblock %}
+

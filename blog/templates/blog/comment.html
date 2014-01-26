@@ -1,0 +1,29 @@
+{% load staticfiles %}
+{% load imagefit %}
+
+
+<div class="floatL w100 margin-top20">
+
+<div class="floatL w18"><a href="#"><img src=
+  {% if comment.user.profile.image %}
+          "{% static post.comment.user.profile.image.url|resize:"65x65,C" %}"
+      {% else %}
+      "/static/images/comments.png"
+      {% endif %}
+
+ class="attachment-mini wp-post-image" alt="Popular" title="Post with comments" /></a>
+</div>
+
+
+      <div class="floatL w80">
+            <h3>{{comment.user.username}}</h3>
+                <div class="meta-info">
+                  <span class="fa fa-clock-o"></span>
+                  {{comment.pub_date|timesince}} ago
+                </div>
+            <p>{{comment.user.profile}}
+              <br>
+              {{comment.body|safe|capfirst}}</p>
+      </div>
+</div>
+

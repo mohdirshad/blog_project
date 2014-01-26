@@ -1,0 +1,65 @@
+{% extends "base_with_structure.html" %}
+{% load staticfiles %}
+
+
+{%block content%}
+<br/><br/>
+
+<ul style="color:red;">
+{%for field in form%}
+    {% for e in field.errors %}
+    <li>{{e}}</li>
+    {%endfor%}
+    
+{%endfor%}
+	{%for ne in form.non_field_errors%}
+	 	<li>{{ne}}</li>
+	{%endfor%}
+</ul>
+
+
+
+<form method="post" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>{% csrf_token %}
+
+<table>
+   <legend>Signup</legend>
+   
+   
+   
+   <tr>
+   <td>{{form.email.label}} <sup>*</sup></td>
+   <td>{{form.email}}</td>
+   </tr>
+    
+   <tr>
+   <td>{{form.password.label}} <sup>*</sup></td>
+   <td>{{form.password}}</td>
+   </tr>
+   
+   <tr>
+   <td>Confirm Password <sup>*</sup>&nbsp;&nbsp;&nbsp;</td>
+   <td>{{form.cpassword}}</td>
+   </tr>
+   
+   
+   
+   
+   <tr>
+   <td>{{form.image.label}}</td>
+   <td>{{form.image}}</td>
+   </tr>
+   
+   <tr>
+   <td colspan="2"><br/></td>
+   
+   </tr>
+   <tr>
+   <td colspan="2"><input type="submit" value="submit"/><br/></td>
+   
+   </tr>
+   
+</table>
+
+
+</form>
+{%endblock%}

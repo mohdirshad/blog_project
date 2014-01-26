@@ -1,0 +1,24 @@
+{% extends 'base_with_structure.html' %}
+{% load staticfiles %}
+{%block content%}
+  <div class="breadcrumbs_block">
+                            <p id="breadcrumbs">
+                                <a href="{% url 'homepage' %}">Home</a> / <a href="/news/">News</a> / <strong>News with information</strong>
+                            </p>
+                        </div>
+                                       
+<h1>{{news_detail.title|title}}</h1>
+
+{%if news_detail.image %}
+<img src="{% static news_detail.image.url %}" alt="Image" width=600px; \><br>
+{% endif %}
+<br>
+<p>Published on: {{news_detail.posted_on}}</p>
+<p>{{news_detail.description|safe|title}}</p>
+
+<hr>
+
+{%endblock%}
+
+
+

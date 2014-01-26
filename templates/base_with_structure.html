@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{%load popular%}
+{% load staticfiles %}
+{% load imagefit %}
+
+{% load blog_tags %}
+
+{% block main %}
+<div id="content" class="margin-top40">
+	<div class="content_container">
+
+			{% block content %}
+			{% endblock %}
+
+	</div>
+
+	{% block sidebar %}
+		<div class="sidebar_big" style="margin-left:25px">
+		<div id="tabbedwidget-3" class="widget-area ui-tabs ui-widget ui-widget-content ui-corner-all">
+
+			<script type='text/javascript' src='/static/js/jquery-1.8.2.min.js'>
+			</script>
+			<script type="text/javascript">var $j=jQuery.noConflict();$j(function(){$j("#tabbedwidget-3").tabs()});
+			</script>
+
+			<div class="tabbed_widget cat_style_6">
+				<ul class="tabs_ul" style="margin-bottom:30px">
+					<li>
+						<a href="#popular_posts_01">Popular</a>
+					</li>
+					<li>
+						<a href="#posts_comments02">Comments</a>
+					</li>
+						<div class="clear"></div>
+				</ul>
+			</div>
+			<div class="cat_style_3" id="popular_posts_01">
+			
+			<!-- Popular Post begins -->
+				{% popularposts %}
+			<!-- Popular post ends -->
+
+			</div>
+			
+
+
+			<!-- Recent comments begins -->
+			<div class="cat_style_3" id="posts_comments02">
+			{% block recent_comments %}
+			{% get_latest_content blog.Comment 4 as recent_comments %}
+				{% for comment in recent_comments %}
+					<div class="cat_style_item cat_style_3_item comment_style_item">
+						<div class="cat_style_image">
+							<div class="cat_style_photo">
+								<a href="#">
+
+
+
+									<img src= {% if comment.user.userprofile.image %}
+											"{% static comment.user.userprofile.image.url %}"
+
+										{% else %}
+										"/static/images/comments.png"
+									{% endif %}
+									 alt="Comment" title="{{comment.user.username}}" />
+								</a>
+							</div>
+						</div>
+						<div class="speacer"></div>
+						<div class="cat_style_info">
+							<h3>
+								<a href="{{comment.post.get_absolute_url}}">{{comment.body|truncatewords_html:"4"|safe}}</a>
+							</h3>
+							<div class="meta-info">
+								<span class="fa fa-clock-o"></span>&nbsp;&nbsp;On {{comment.pub_date|date:"F j, Y"}}
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+				{% endfor %}
+			{% endblock %}
+			</div>
+			<!-- Recent Comments ends -->
+
+		</div>
+
+
+		{% block newletter %}
+
+		<div class="join_newsletter" >
+			<div class="nice_heading" >
+				<h3>
+					Join our Newsletter
+				</h3>
+			</div>
+
+			<form action="/subscribe" enctype="multipart/form-data" method="post" id="join_newsletter" name="contact-form">
+			{% csrf_token %}
+				<p>
+					Subscribe to our free weekly newsletter for news and new courses
+				</p>
+				<div style="height:80px">
+					
+				<p class="errormsg" style="color:red;"></p>
+				<input placeholder="Enter your email address" type="text" id="id_email_field" name="email_field" class="field"> 
+				
+				</div>
+				<input type="submit" value="Subscribe" class="submit-button" name="" id="submit-button"
+				>
+			
+				<div class="clear"></div>
+			</form>
+		</div>
+
+		{% endblock%}
+
+
+		{% block archive %}
+		<div class="archive">
+			<div class="nice_heading">
+				<h3>
+					Archive
+				</h3>
+			</div>
+			<ul>
+				{% for month in months %}
+				<li>
+					<a href="/blog/{{month.1}}/{{month.0|lower|slice:"3"}}">{{month.0}} - {{month.1}}</a>
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+		{% endblock %}
+
+
+		{% block video %}
+		<div class="video">
+			<div class="nice_heading">
+			<h3>Video Box</h3>
+			</div>
+			<div>
+
+				<iframe width="300" height="170" src="//www.youtube.com/embed/DpN5ko0C2y8" frameborder="0" allowfullscreen></iframe>
+
+			</div>
+		</div>
+		{% endblock %}
+
+		{% block popular_tags %}
+		<div class="popular_tags">
+			<div class="nice_heading">
+				<h3>
+					Popular Tags
+				</h3>
+			</div>
+			<div class="tagcloud">
+                 {%populartags%}
+			</div>
+		</div>
+		{% endblock %}
+	</div>
+	{% endblock %}
+	
+</div>
+{% endblock %}

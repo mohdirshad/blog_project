@@ -1,0 +1,29 @@
+{% load staticfiles %}
+{% load imagefit %}
+
+{%for post in popular_posts %}
+ <div class="cat_style_item cat_style_3_item">
+            <div class="cat_style_image">
+                <div class="cat_style_photo">
+                    <a href="#123">
+                        {% if post.image %}
+                        <img src="{% static post.image.url|resize:"120x80,C" %}" class="attachment-mini wp-post-image" alt="Popular" title="Post with comments" />
+                        {% else %}
+                        <img src="/static/images/default.png" class="attachment-mini wp-post-image" alt="Popular" title="Post with comments" />
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+            <div class="speacer"></div>
+            <div class="cat_style_info">
+                <h3>
+                    <a href="{{post.get_absolute_url}}">{{post.title|title|truncatewords_html:"6"}}</a>
+                </h3>
+                <div class="meta-info">&nbsp;&nbsp;{{post.pub_date|timesince}} ago&nbsp;&nbsp;</div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+{%endfor%}
+
+

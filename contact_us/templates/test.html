@@ -1,0 +1,73 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script>
+$(document).ready(function(){
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
+var csrftoken = getCookie('csrftoken');
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+jQuery.ajaxSetup({
+    crossDomain: false, // obviates need for sameOrigin test
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type)) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
+
+$("#login_button_id").click(function(e){
+    e.preventDefault();
+    
+    var email = $("#email_id").val();
+    var password = $("#password_id").val(); 
+    
+    $.ajax({
+            type: "POST",
+            url: "/validate2/",
+            data: {'email':email,'password':password} ,
+            success: function(data){
+                    alert(data);
+                    },
+
+    });
+});
+
+
+
+});
+
+</script>
+
+
+
+
+
+
+
+
+<p id="id_data"></p>
+<input type="text"  id="email_id"/>
+<input type="text"  id="password_id"/>
+<input type="button"  value="validate" id="button_id"/>
+

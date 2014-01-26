@@ -1,0 +1,46 @@
+{% extends "base_with_structure.html" %}
+{% load staticfiles %}
+
+
+{%block content%}
+<br/><br/>
+
+
+         
+	     {%for e in errors%}
+	     <div style="color:maroon;font-size:15px">	[ {{e}} ] </div> 
+	     {%endfor%}
+
+
+
+
+<form method="post" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>{% csrf_token %}
+
+<table>
+   <legend>Login</legend>
+   
+   
+   
+   <tr>
+   <td>Email <sup>*</sup> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+   <td><input type="text" value="{{email}}" name="email" required></td>
+   </tr>
+    
+   <tr>
+   <td>Password <sup>*</sup></td>
+   <td><input type="password" value="{{password}}" name="password" required></td>
+   </tr>
+   <tr>
+   <td colspan="2"><br/></td>
+   
+   </tr>
+   <tr>
+   <td colspan="2"><input type="submit" value="Login"/><br/></td>
+   
+   </tr>
+   
+</table>
+
+
+</form>
+{%endblock%}

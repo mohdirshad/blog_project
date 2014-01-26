@@ -1,0 +1,72 @@
+
+
+{% extends "base_with_structure.html" %}
+{% load staticfiles %}
+
+
+{%block content%}
+<br/><br/>
+
+<ul style="color:red;">
+{%for field in form%}
+    {% for e in field.errors %}
+    <li>{{e}}</li>
+    {%endfor%}
+    
+{%endfor%}
+	{%for ne in form.non_field_errors%}
+	 	<li>{{ne}}</li>
+	{%endfor%}
+</ul>
+
+
+
+<form method="post" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>{% csrf_token %}
+
+
+<table>
+   <legend>Edit Details</legend>
+   
+   <tr>
+   <td>Email <sup>*</sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+   <td><input type="text" disabled value="{{request.user.email}}"/></td>
+   </tr>
+    
+   
+   
+   <tr>
+   <td>First Name <sup>*</sup></td>
+   <td>{{form.first_name}}</td>
+   </tr>
+   
+   <tr>
+   <td>Last Name <sup>*</sup></td>
+   <td>{{form.last_name}}</td>
+   </tr>
+   
+   {% if not request.user.is_superuser%}
+   <tr>
+   <td>{{form.image.label}}</td>
+   <td>{{form.image}}{% if UP.image%}[ {{UP.user.username}}.jpeg ]{%endif%}</td>
+   </tr>
+   {%endif%}
+   
+   <tr>
+   <td colspan="2"><br/></td>
+   
+   </tr>
+   <tr>
+   <td colspan="2"><input type="submit" value="update"/><br/></td>
+   
+   </tr>
+   
+</table>
+
+
+</form>
+{%endblock%}
+
+
+
+
+

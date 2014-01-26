@@ -1,0 +1,71 @@
+{% extends "base_with_structure.html" %}
+
+{% load blog_tags %}
+{% load staticfiles %}
+
+
+{% block content %}
+    {% for post in object_list %}
+        <div class="blog_section">
+            <div class="blogs">
+                <!-- Post image begin -->
+                <div class="cat_style_image">
+                    {% if post.image %}
+                    <img src="{% static post.image %}">
+                    {% else %}
+                    <img src="/static/images/default.png">
+                    {% endif %}
+                </div>
+                <!-- post image end -->
+                <div class="speacer"></div>
+                <div class="cat_style_info">
+                    <h3>
+                        {{post.title|title}}
+                    </h3>
+
+                    <p>
+                        {{post.body|truncatewords_html:"15" |safe}}
+                    </p>
+                    <div class="readmore">
+                        <a href="{{post.get_absolute_url}}">Read More </a>
+                        <span class="fa fa-chevron-right"></span> 
+                    </div>
+                    <div class="meta-info">
+                        <span class="fa fa-clock-o"></span> 
+                        {{post.pub_date|timesince}} ago 
+                        <span class="fa fa-comments"></span>
+                        {% if post.comment_set.all.count > 0 %}
+                        <a href="{{post.get_absolute_url}}" title="{{post.comment_set.all.count}} comments">{{post.comment_set.all.count}} comment{{comment|pluralize}}</a>
+                        {% else %}
+                            No Comments
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    {% empty %}
+        <p>No posts yet!</p>
+    {% endfor %}
+
+
+    <!-- Pagination -->
+    {% if posts.paginator.num_pages > 1 %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if posts.has_previous %}
+                    <a href="?page={{ posts.previous_page_number }}">&larr;prev</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+                </span>
+
+                {% if posts.has_next %}
+                    <a href="?page={{ posts.next_page_number }}">next&rarr;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+{% endblock %}
+
+
